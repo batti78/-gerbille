@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
     r.integ = tab;
     int haari = 1;
     printf("before case_h"); 
-    case_h(&haartab[1], &r, haari);
-    printf("%lu \n", haartab[1].result); 
+    case_h(&haartab[1000], &r, haari);
+    printf("%lu \n", haartab[1000].result); 
     //for(i = 100000; i < 101000; i++) 
     //  printf("%ld \n", haartab[i].result); 
     //printf("%lu \n", nb); 
