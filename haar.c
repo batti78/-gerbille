@@ -198,88 +198,67 @@ int case_h(struct haar *array, struct rect *r, int haar)
   int h = r->size_h;
   int w = r->size_w;
   printf("h = %d, w = %d, haar = %d, x = %d, y = %d  \n", h, w, haar, r->x, r->y); 
-  switch (haar)
-            {
-            case 0 :
-              if (h>1 && (h%2) == 0)
-              {
-                array->result = haar1(r);
-                //printf("%lu \n", array.result); 
-                array->haar = 1;
-                array->x = r->x;
-                array->y = r->y;
-                array->size_h = r->size_h;
-                array->size_w = r->size_w;
-                //*res = array; 
-                return 1; 
-              }
-                break;
-            case 1 :
-              //printf("before \n");
-              if (w>1 && (w%2) == 0)
-              {
-                //printf("-----------------------------");
-                array->result = haar2(r);
-                //printf("%lu \n", array.result); 
-                array->haar = 2;
-                array->x = r->x;
-                array->y = r->y;
-                array->size_h = r->size_h;
-                array->size_w = r->size_w;
-                //*res = array;
-                return 1; 
-              }
-              //printf("after \n");
-              break;
-            case 2 :
-              if (w>2 && (w%3) == 0)
-              {
-                array->result = haar3(r);
-                array->haar = 3;
-                array->x = r->x;
-                array->y = r->y;
-                array->size_h = r->size_h;
-                array->size_w = r->size_w; 
-                //*res = array;
-                return 1; 
-              }
-              break;
-            case 3 :
-              //printf("fonction 4 ?");
-              if (h>2 && (h%3) == 0)
-              {
-                printf("fonction4deb !!!   ");
-                array->result = haar4(r);
-                array->haar = 4;
-                array->x = r->x;
-                array->y = r->y;
-                array->size_h = r->size_h;
-                array->size_w = r->size_w;
-                //*res = array; 
-                printf("fonction 4"); 
-                return 1; 
-              }
-              break;
-            default : 
-              printf("if.............................");
-              if ((h>1) && (w>1) && ((h%2) == 0) && ((w%2) == 0))
-                printf("apres le if ?");
-              {
-                array->result = haar5(r); 
-                array->haar = 5;
-                array->x = r->x;
-                array->y = r->y;
-                array->size_h = r->size_h;
-                array->size_w = r->size_w;
-                //*res = array;
-                return 1; 
-              }
-              break;
-            /*default:
-              printf("default"); 
-              return 0; 
-              break; */
-            } 
-  return 0; 
+  if ((haar == 0)&&(h>1 && (h%2) == 0))
+  {
+    array->result = haar1(r);
+    //printf("%lu \n", array.result); 
+    array->haar = 1;
+    array->x = r->x;
+    array->y = r->y;
+    array->size_h = r->size_h;
+    array->size_w = r->size_w;
+    //*res = array; 
+    return 1; 
+  }
+  else if ((haar == 1) && (w>1 && (w%2) == 0))
+  {
+    //printf("-----------------------------");
+    array->result = haar2(r);
+    //printf("%lu \n", array.result); 
+    array->haar = 2;
+    array->x = r->x;
+    array->y = r->y;
+    array->size_h = r->size_h;
+    array->size_w = r->size_w;
+    //*res = array;
+    return 1; 
+  }
+  else if((haar == 2)&&(w>2 && (w%3) == 0))
+  {
+    array->result = haar3(r);
+    array->haar = 3;
+    array->x = r->x;
+    array->y = r->y;
+    array->size_h = r->size_h;
+    array->size_w = r->size_w; 
+    //*res = array;
+    return 1; 
+  }
+  else if ((haar == 3)&&(h>2 && (h%3) == 0))
+  {
+    printf("fonction4deb !!!   ");
+    array->result = haar4(r);
+    array->haar = 4;
+    array->x = r->x;
+    array->y = r->y;
+    array->size_h = r->size_h;
+    array->size_w = r->size_w;
+    //*res = array; 
+    printf("fonction 4"); 
+    return 1; 
+  }
+  else if ((haar == 4)&&((h>1) && (w>1) && ((h%2) == 0) && ((w%2) == 0)))
+  {
+    array->result = haar5(r); 
+    array->haar = 5;
+    array->x = r->x;
+    array->y = r->y;
+    array->size_h = r->size_h;
+    array->size_w = r->size_w;
+    //*res = array;
+    return 1; 
+   }
+  else
+    return 0; 
 }
 

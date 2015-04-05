@@ -28,10 +28,10 @@ int main(int argc, char *argv[])
     struct rect r;
     r.x = 0;
     r.y = 0;
-    r.size_h = 1;
+    r.size_h = 3;
     r.size_w = 1;
     r.integ = tab;
-    int haari = 4;
+    int haari = 3;
     printf("before case_h"); 
     case_h(&haartab[1000], &r, haari);
     printf("%lu \n", haartab[1000].result); 
