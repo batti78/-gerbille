@@ -132,6 +132,7 @@ long haar1(struct rect *rect) {
 }
 
 long haar2(struct rect *rect) {
+  printf("haar2 in progress"); 
   return (-C(rect) - 2*E(rect) + 2*G(rect) + B(rect) + A(rect) - D(rect));
 }
 
@@ -249,3 +250,83 @@ unsigned long fun_haar(unsigned long **integ, struct haar array[163000])
   //ret = array;
   return n; 
 }
+
+
+
+struct haar case_h(struct rect *r, int haar, unsigned long *nb)
+{
+  printf("tout au début de case_h");
+  struct haar array;
+  int h = r->size_h;
+  int w = r->size_w;
+  unsigned long n = *nb; 
+  switch (haar)
+            {
+            case 0 :
+              if (h>1 && (h%2) == 0)
+              {
+                array.result = haar1(r);
+                array.haar = 1;
+                array.x = r->x;
+                array.y = r->y;
+                array.size_h = r->size_h;
+                array.size_w = r->size_w; 
+                n++;
+              }
+                break;
+            case 1 :
+                printf("before \n");
+              if (w>1 && (w%2) == 0)
+              {
+                printf("-----------------------------");
+                array.result = haar2(r);
+                array.haar = 2;
+                array.x = r->x;
+                array.y = r->y;
+                array.size_h = r->size_h;
+                array.size_w = r->size_w; 
+                n++;
+              }
+              printf("after \n");
+              break;
+            case 3 :
+              if (w>2 && (w%3) == 0)
+              {
+                array.result = haar3(r);
+                array.haar = 3;
+                array.x = r->x;
+                array.y = r->y;
+                array.size_h = r->size_h;
+                array.size_w = r->size_w; 
+                n++;
+              }
+              break;
+            case 4 :
+              if (h>2 && (h%3) == 0)
+              {
+                array.result = haar4(r);
+                array.haar = 4;
+                array.x = r->x;
+                array.y = r->y;
+                array.size_h = r->size_h;
+                array.size_w = r->size_w; 
+                n++;
+              }
+              break;
+            case 5 :
+              if (h>1 && w>1 && (h%2) == 0 && (w%2) == 0)
+              {
+                array.result = haar5(r); 
+                array.haar = 5;
+                array.x = r->x;
+                array.y = r->y;
+                array.size_h = r->size_h;
+                array.size_w = r->size_w; 
+                n++;  
+              }
+              break;
+            }
+  *nb = n; 
+  return array; 
+}
+

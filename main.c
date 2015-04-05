@@ -17,12 +17,22 @@ int main(int argc, char *argv[])
     printf("%s\n", "bien joué");
     integrale(tab, img->w, img->h);
     unsigned long nb = 0; 
-    struct haar *haar = NULL;
-    nb = fun_haar(tab, haar);
-    printf("%lu \n", nb);
-    int i; 
-    for (i = 0; i < 20; i++)
-      printf("%lu \n", haar[i].result);
+    struct haar haar[2];
+    //nb = fun_haar(tab, haar);
+    //printf("%lu \n", nb);
+    //int i; 
+    //for (i = 0; i < 20; i++)
+    //  printf("%lu \n", haar[i].result);
+    struct rect r;
+    r.x = 12;
+    r.y = 12;
+    r.size_h = 6;
+    r.size_w = 6;
+    r.integ = tab;
+    int haari = 1;
+    printf("before case_h"); 
+    haar[1] = case_h(&r, haari, &nb);
+    printf("%ld \n", haar[1].result); 
     return 0; 
    }
 }

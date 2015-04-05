@@ -19,9 +19,7 @@ struct rect{
   int x; 
   int y;
   int size_w;
-  int size_h; 
-  int img_w;
-  int img_h;
+  int size_h;
   unsigned long **integ;
 };
 
@@ -197,7 +195,7 @@ unsigned long fun_haar(unsigned long **integ, struct haar *ret);
               array->result = haar4(r);
               array->haar = 4; 
               break;
-            case 5 :
+              case 5 :
               array->result = haar5(r); 
               array->haar = 5; 
               break;
@@ -213,5 +211,8 @@ unsigned long fun_haar(unsigned long **integ, struct haar *ret);
     }
   }
 }*/
+
+struct haar case_h(struct rect *r, int haar, unsigned long *nb); 
+
 
 #endif
