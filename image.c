@@ -133,7 +133,16 @@ void gris_normalise(SDL_Surface *img)
 
 SDL_Surface* tab_to_img(unsigned long **tab, unsigned w, unsigned h)
 {
-  SDL_Surface *img = SDL_CreateRGBSurface(0, w, h, 8, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+  SDL_Surface *img = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
+  Uint8 r = 0;
+  for (unsigned i = 0; i < h; i++)
+  {
+    for (unsigned j = 0; j < w; j++)
+    {
+      r = tab[i][j];
+      putpixel(img, j, i, SDL_MapRGB(img->format, r, r, r));
+    }
+  }
   return img;
 }
 
@@ -181,7 +190,7 @@ unsigned long** img_to_tab(SDL_Surface *img)
   return array;
 }
 
-// reduit une image e*e en 24*24
+// reduit une image w*h en 24*24
 
 unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
 {
