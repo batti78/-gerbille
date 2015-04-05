@@ -152,12 +152,11 @@ long haar5(struct rect *rect) {
 
 //integ = 24*24 (!) 
 
-unsigned long fun_haar(unsigned long **integ, struct haar ret[163000])
+unsigned long fun_haar(unsigned long **integ, struct haar *ret)
 {
   //struct haar array[163000];
-  printf("début de la fonction haar.\n");
-  int x, y, h, w, haar;
-  unsigned long n = 0; 
+  int x, y, h, w, nhaar, b;
+  unsigned long n = 0;
   //struct haar *array = malloc(162336 * sizeof(struct haar));
   struct rect r; 
   r.integ = integ;
@@ -173,13 +172,14 @@ unsigned long fun_haar(unsigned long **integ, struct haar ret[163000])
         for(w = 1; w <= 24-x; w++)
         {
           r.size_w = w;
-          for (haar = 0; haar < 5; haar++)
+          for (nhaar = 0; nhaar < 5; nhaar++)
           {
-            
-            if(case_h(&(ret[n]), &r, haar))
-              n++;
-            printf("%lu \n",ret[n].result);
-            printf("%lu : y =%d,  x = %d, h = %d, w = %d, haar = %d \n",n, y, x, h, w, haar);
+            //printf("%d \n", nhaar);
+            b = case_h(&ret[1], &r, nhaar);
+            printf("%d \n", b);
+            printf("%lu  %lu %d %d %d %d \n",n ,ret[1].result, y , x, h ,w); 
+            if (b != 0)
+              n++; 
           }
         }
       }
@@ -196,7 +196,8 @@ int case_h(struct haar *array, struct rect *r, int haar)
   //printf("tout au début de case_h");
   //struct haar array;
   int h = r->size_h;
-  int w = r->size_w; 
+  int w = r->size_w;
+  printf("h = %d, w = %d, haar = %d, x = %d, y = %d  \n", h, w, haar, r->x, r->y); 
   switch (haar)
             {
             case 0 :
@@ -230,7 +231,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
               }
               //printf("after \n");
               break;
-            case 3 :
+            case 2 :
               if (w>2 && (w%3) == 0)
               {
                 array->result = haar3(r);
@@ -243,9 +244,11 @@ int case_h(struct haar *array, struct rect *r, int haar)
                 return 1; 
               }
               break;
-            case 4 :
+            case 3 :
+              //printf("fonction 4 ?");
               if (h>2 && (h%3) == 0)
               {
+                printf("fonction4deb !!!   ");
                 array->result = haar4(r);
                 array->haar = 4;
                 array->x = r->x;
@@ -253,11 +256,14 @@ int case_h(struct haar *array, struct rect *r, int haar)
                 array->size_h = r->size_h;
                 array->size_w = r->size_w;
                 //*res = array; 
+                printf("fonction 4"); 
                 return 1; 
               }
               break;
-            case 5 :
-              if (h>1 && w>1 && (h%2) == 0 && (w%2) == 0)
+            default : 
+              printf("if.............................");
+              if ((h>1) && (w>1) && ((h%2) == 0) && ((w%2) == 0))
+                printf("apres le if ?");
               {
                 array->result = haar5(r); 
                 array->haar = 5;
@@ -269,8 +275,10 @@ int case_h(struct haar *array, struct rect *r, int haar)
                 return 1; 
               }
               break;
-            default:
+            /*default:
+              printf("default"); 
               return 0; 
+              break; */
             } 
   return 0; 
 }
