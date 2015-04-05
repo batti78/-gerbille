@@ -129,6 +129,14 @@ void gris_normalise(SDL_Surface *img)
   printf("%s", "gris\n");
 }
 
+// convertie un tableau en image
+
+SDL_Surface* tab_to_img(unsigned long **tab, unsigned w, unsigned h)
+{
+  SDL_Surface *img = SDL_CreateRGBSurface(0, w, h, 8, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+  return img;
+}
+
 // integralise un tableau correspondant a une image
 
 void integrale(unsigned long **integ, unsigned w, unsigned h)
@@ -183,13 +191,14 @@ unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
   printf("alloc h\n");
   for (unsigned i = 0; i < h; i++)
   {
-    big[i] = malloc(sizeof(unsigned long) * w * 24);
-    printf("alloc w\n");
+    for (unsigned x = 0; x < 24; x++)
+      big[i * 24 + x] = malloc(sizeof(unsigned long) * w * 24);
+    //printf("alloc w\n");
     for (unsigned j = 0; j < w; j++)
       for (unsigned k = 0; k < 24; k++)
         for (unsigned l = 0; l < 24; l++)
         {
-          printf("i : %d, j : %d, k : %d, l : %d\n", i, j, k, l);
+          //printf("i : %d, j : %d, k : %d, l : %d\n", i, j, k, l);
           big[i * 24 + k][j * 24 + l] = array[i][j];
         }
   }
@@ -208,7 +217,9 @@ unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
       med = med / (h * w);
       ret[i][j] = med;
     }
+    free(big[i]);
   }
+  free(big);
   printf("done\n");
   return ret;
 }
