@@ -173,31 +173,42 @@ unsigned long** img_to_tab(SDL_Surface *img)
   return array;
 }
 
-// reduit une image en 24*24
-/*
-void reduce_to_24(struct rect *rec, unsigned long array[24][24])
+// reduit une image e*e en 24*24
+
+unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
 {
-  float rh = ((float) rec->size_h) / 24;
-  float rw = ((float) rec->size_w) / 24;
-  unsigned i, j, x, y, count;
-  Uint8 med;
-  for (i = 0; i < 24; i++)
+  unsigned long med;
+  unsigned long **big = malloc(sizeof(unsigned long) * 24 * h);
+  unsigned long **ret = malloc(sizeof(unsigned long) * 24);
+  printf("alloc h\n");
+  for (unsigned i = 0; i < h; i++)
   {
-    med = 0;
-    count = 0;
-    for (j = 0; j < 24; j++)
-    {
-      for (x = (unsigned) ((float) i * rh); x < (unsigned) ((float) (i + 1) * rh); x++)
-      {
-        for (y = (unsigned) ((float) j * rw); y < (unsigned) ((float) (j + 1) * rw); y++)
+    big[i] = malloc(sizeof(unsigned long) * w * 24);
+    printf("alloc w\n");
+    for (unsigned j = 0; j < w; j++)
+      for (unsigned k = 0; k < 24; k++)
+        for (unsigned l = 0; l < 24; l++)
         {
-          count++;
-          med += rec->integ[rec->y + y][rec->x + x];
+          printf("i : %d, j : %d, k : %d, l : %d\n", i, j, k, l);
+          big[i * 24 + k][j * 24 + l] = array[i][j];
         }
-      }
-      med = med / count;
-      array[i][j] = med;
+  }
+
+  printf("2nd part\n");
+
+  for (unsigned i = 0; i < 24; i++)
+  {
+    ret[i] = malloc(sizeof(unsigned long) * 24);
+    for (unsigned j = 0; j < 24; j++)
+    {
+      med = 0;
+      for (unsigned k = 0; k < h; k++)
+        for (unsigned l = 0; l < w; l++)
+          med += big[i * h + k][j * w + l];
+      med = med / (h * w);
+      ret[i][j] = med;
     }
   }
+  printf("done\n");
+  return ret;
 }
-*/
