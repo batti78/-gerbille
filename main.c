@@ -16,8 +16,10 @@ int main(int argc, char *argv[])
     unsigned long **tab = img_to_tab(img);
     printf("%s\n", "bien joué");
     integrale(tab, img->w, img->h);
-    unsigned long nb = 0; 
-    struct haar haar[2];
+    //unsigned long nb = 0; 
+    struct haar haartab[163000];
+    printf("%lu \n", sizeof(haartab)/sizeof(struct haar)); 
+    // = fun_haar(tab, haartab);
     //nb = fun_haar(tab, haar);
     //printf("%lu \n", nb);
     //int i; 
@@ -31,8 +33,11 @@ int main(int argc, char *argv[])
     r.integ = tab;
     int haari = 1;
     printf("before case_h"); 
-    haar[1] = case_h(&r, haari, &nb);
-    printf("%ld \n", haar[1].result); 
+    case_h(&haartab[1], &r, haari);
+    printf("%lu \n", haartab[1].result); 
+    //for(i = 100000; i < 101000; i++) 
+    //  printf("%ld \n", haartab[i].result); 
+    //printf("%lu \n", nb); 
     return 0; 
    }
 }
