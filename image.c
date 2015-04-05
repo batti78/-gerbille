@@ -146,6 +146,20 @@ SDL_Surface* tab_to_img(unsigned long **tab, unsigned w, unsigned h)
   return img;
 }
 
+// convertie un rect en tableau
+
+unsigned long** rect_to_tab(struct rect *rec)
+{
+  unsigned long **array = malloc(sizeof(unsigned long) * rec->size_h);
+  for (unsigned i = 0; (int) i < rec->size_h; i++)
+  {
+    array[i] = malloc(sizeof(unsigned long) * rec->size_w);
+    for (unsigned j = 0; (int) j < rec->size_w; j++)
+      array[i][j] = rec->integ[rec->y + i][rec->x + j];
+  }
+  return array;
+}
+
 // integralise un tableau correspondant a une image
 
 void integrale(unsigned long **integ, unsigned w, unsigned h)
