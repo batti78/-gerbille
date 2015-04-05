@@ -198,7 +198,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
   int h = r->size_h;
   int w = r->size_w;
   printf("h = %d, w = %d, haar = %d, x = %d, y = %d  \n", h, w, haar, r->x, r->y); 
-  if (haar == 0)&&(h>1 && (h%2) == 0)
+  if ((haar == 0)&&(h>1 && (h%2) == 0))
   {
     array->result = haar1(r);
     //printf("%lu \n", array.result); 
@@ -210,7 +210,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
     //*res = array; 
     return 1; 
   }
-  else if (haar == 1) && (w>1 && (w%2) == 0)
+  else if ((haar == 1) && (w>1 && (w%2) == 0))
   {
     //printf("-----------------------------");
     array->result = haar2(r);
@@ -223,7 +223,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
     //*res = array;
     return 1; 
   }
-  else if(haar == 2)&&(w>2 && (w%3) == 0)
+  else if((haar == 2)&&(w>2 && (w%3) == 0))
   {
     array->result = haar3(r);
     array->haar = 3;
@@ -234,7 +234,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
     //*res = array;
     return 1; 
   }
-  else if (haar == 3)&&(h>2 && (h%3) == 0)
+  else if ((haar == 3)&&(h>2 && (h%3) == 0))
   {
     printf("fonction4deb !!!   ");
     array->result = haar4(r);
@@ -247,7 +247,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
     printf("fonction 4"); 
     return 1; 
   }
-  else if (haar == 4)((h>1) && (w>1) && ((h%2) == 0) && ((w%2) == 0))
+  else if ((haar == 4)&&((h>1) && (w>1) && ((h%2) == 0) && ((w%2) == 0)))
   {
     array->result = haar5(r); 
     array->haar = 5;
