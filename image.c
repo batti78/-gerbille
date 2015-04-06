@@ -3,7 +3,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <err.h>
-#include "image.h"
+#include "image.h" 
+#include "rect.h"
 
 static inline
 Uint8* pixelref(SDL_Surface *surf, unsigned x, unsigned y) {
