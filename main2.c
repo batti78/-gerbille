@@ -12,10 +12,11 @@ int main(int argc, char *argv[])
     char *path = argv[1]; 
     init_sdl();
     SDL_Surface *img = load_image(path);
-    gris_normalise(img);
+    //gris_normalise(img);
     unsigned long **tab = img_to_tab(img);
+    
+    //integrale(tab, img->w, img->h);
     /*
-    integrale(tab, img->w, img->h);
     unsigned long **test = e_to_24(tab, img->w, img->h);
     display_image(img);
     display_image(tab_to_img(tab, img->w, img->h));
@@ -27,8 +28,10 @@ int main(int argc, char *argv[])
     rec->size_w = 200;
     rec->size_h = 200;
     rec->integ = tab;
-    tab = rect_to_tab(rec);
-    display_image(tab_to_img(tab, 200, 200));
+    unsigned long** ada = adaboost_rect(rec);
+    display_image(tab_to_img(ada, 24, 24));
+    free(tab);
+    free(rec);
     return 0; 
    }
 }

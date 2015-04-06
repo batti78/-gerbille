@@ -211,22 +211,20 @@ unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
   unsigned long med;
   unsigned long **big = malloc(sizeof(unsigned long) * 24 * h);
   unsigned long **ret = malloc(sizeof(unsigned long) * 24);
-  printf("alloc h\n");
+  
+  // remplissage de la matrice big qui contient 24 pixel pour chaque pixel de array
+
   for (unsigned i = 0; i < h; i++)
   {
     for (unsigned x = 0; x < 24; x++)
       big[i * 24 + x] = malloc(sizeof(unsigned long) * w * 24);
-    //printf("alloc w\n");
     for (unsigned j = 0; j < w; j++)
       for (unsigned k = 0; k < 24; k++)
         for (unsigned l = 0; l < 24; l++)
-        {
-          //printf("i : %d, j : %d, k : %d, l : %d\n", i, j, k, l);
           big[i * 24 + k][j * 24 + l] = array[i][j];
-        }
   }
 
-  printf("2nd part\n");
+  // remplissage de la matrice 24*24 par moyennage des valeurs de big
 
   for (unsigned i = 0; i < 24; i++)
   {
@@ -243,6 +241,13 @@ unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
     free(big[i]);
   }
   free(big);
-  printf("done\n");
   return ret;
+}
+
+unsigned long** adaboost_rect(struct rect *rec)
+{
+  unsigned long **array = e_to_24(rect_to_tab(rec), rec->size_w, rec->size_h);
+  // array correspond au morceau delimite par le rect, ramene en 24*24
+  // adaboost (array);
+  return array;
 }
