@@ -104,7 +104,7 @@ void gris_normalise(SDL_Surface *img)
   Uint8 r, g, b, med, max = 0;
   Uint8 min = 255;
   unsigned x,y;
-  // put picture in grey level and get min and max values
+  // grise l'image et récupère les valeurs min et max pour la normalisation
   for (x = 0; x < (unsigned) img->h; x++)
   {
     for (y = 0; y < (unsigned) img->w; y++)
@@ -117,7 +117,7 @@ void gris_normalise(SDL_Surface *img)
       putpixel(img, y, x, SDL_MapRGB(img->format, r, g, b));
     }
   }
-  // normalization of the picture depending on min and max
+  // normalise l'image en fonction de min et max
   for (x = 0; x < (unsigned) img->h; x++)
   {
     for (y = 0; y < (unsigned) img->w; y++)
@@ -130,7 +130,7 @@ void gris_normalise(SDL_Surface *img)
   printf("%s", "gris\n");
 }
 
-// convertie un tableau en image
+// convertit un tableau en image
 
 SDL_Surface* tab_to_img(unsigned long **tab, unsigned w, unsigned h)
 {
@@ -147,7 +147,7 @@ SDL_Surface* tab_to_img(unsigned long **tab, unsigned w, unsigned h)
   return img;
 }
 
-// convertie un rect en tableau
+// convertit un rect en tableau
 
 unsigned long** rect_to_tab(struct rect *rec)
 {
@@ -161,7 +161,7 @@ unsigned long** rect_to_tab(struct rect *rec)
   return array;
 }
 
-// integralise un tableau correspondant a une image
+// integralise un tableau correspondant à une image
 
 void integrale(unsigned long **integ, unsigned w, unsigned h)
 {
@@ -182,17 +182,15 @@ void integrale(unsigned long **integ, unsigned w, unsigned h)
     }
     i++;
   }
-  printf("%s", "integ done\n");
 }
 
-// convertie une image grise en tableau
+// convertit une image en tableau
 
 unsigned long** img_to_tab(SDL_Surface *img)
 {
   Uint8 r = 0;
   unsigned i,j;
   unsigned long **array = malloc(sizeof(unsigned long*) * img->h);
-  printf("w : %d\nh : %d\n", img->w, img->h);
   for (i = 0; i < (unsigned) img->h; i++)
   {
     array[i] = malloc(sizeof(unsigned long) * img->w);
@@ -206,28 +204,30 @@ unsigned long** img_to_tab(SDL_Surface *img)
 }
 
 // reduit une image w*h en 24*24
+// libère array
 
 unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
 {
   unsigned long med;
   unsigned long **big = malloc(sizeof(unsigned long) * 24 * h);
   unsigned long **ret = malloc(sizeof(unsigned long) * 24);
-  printf("alloc h\n");
+  
+  // remplissage de la matrice big qui contient 24 pixel pour chaque pixel de array
+  // libère array
+
   for (unsigned i = 0; i < h; i++)
   {
     for (unsigned x = 0; x < 24; x++)
       big[i * 24 + x] = malloc(sizeof(unsigned long) * w * 24);
-    //printf("alloc w\n");
     for (unsigned j = 0; j < w; j++)
       for (unsigned k = 0; k < 24; k++)
         for (unsigned l = 0; l < 24; l++)
-        {
-          //printf("i : %d, j : %d, k : %d, l : %d\n", i, j, k, l);
           big[i * 24 + k][j * 24 + l] = array[i][j];
-        }
+    free(array[i]);
   }
-
-  printf("2nd part\n");
+  free(array);
+  // remplissage de la matrice 24*24 par moyennage des valeurs de big
+  // libère big
 
   for (unsigned i = 0; i < 24; i++)
   {
@@ -244,6 +244,15 @@ unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
     free(big[i]);
   }
   free(big);
-  printf("done\n");
   return ret;
+}
+
+// applique adaboost à un rect dont le morceau correspondant est réduit en 24*24
+
+unsigned long** adaboost_rect(struct rect *rec)
+{
+  unsigned long **array = e_to_24(rect_to_tab(rec), rec->size_w, rec->size_h);
+  // array correspond au morceau delimite par le rect, ramene en 24*24
+  // adaboost (array);
+  return array;
 }
