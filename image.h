@@ -15,6 +15,14 @@ SDL_Surface* load_image(char *path);
 
 void init_sdl(void);
 
+struct rect{
+  int x; 
+  int y;
+  int size_w;
+  int size_h;
+  unsigned long **integ;
+};
+
 #endif
 
 
