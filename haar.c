@@ -96,7 +96,7 @@ unsigned long K(struct rect* rect) {
 }
 
 unsigned long L(struct rect *rect) {
-  return rect->integ[rect->y + 2*(rect->size_h)/ -1][rect->x + rect->size_w -1];
+  return rect->integ[rect->y + 2*(rect->size_h)/3 -1][rect->x + rect->size_w -1];
 }
 
 unsigned long M(struct rect *rect) {
@@ -141,6 +141,7 @@ long haar3(struct rect *rect) {
 }
 
 long haar4(struct rect *rect) {
+  //printf("dans haar 4"); 
   return (- 3*L(rect) - 3*P(rect) + 3*O(rect) + 3*K(rect) - B(rect) + A(rect) - D(rect) + C(rect));
 }
 
@@ -175,9 +176,9 @@ unsigned long fun_haar(unsigned long **integ, struct haar *ret)
           for (nhaar = 0; nhaar < 5; nhaar++)
           {
             //printf("%d \n", nhaar);
-            b = case_h(&ret[1], &r, nhaar);
-            printf("%d \n", b);
-            printf("%lu  %lu %d %d %d %d \n",n ,ret[1].result, y , x, h ,w); 
+            b = case_h(&ret[n], &r, nhaar);
+            //printf("%d \n", b);
+            //printf("%lu  %lu %d %d %d %d \n",n ,ret[1].result, y , x, h ,w); 
             if (b != 0)
               n++; 
           }
@@ -197,7 +198,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
   //struct haar array;
   int h = r->size_h;
   int w = r->size_w;
-  printf("h = %d, w = %d, haar = %d, x = %d, y = %d  \n", h, w, haar, r->x, r->y); 
+  //printf("h = %d, w = %d, haar = %d, x = %d, y = %d  \n", h, w, haar, r->x, r->y); 
   if ((haar == 0)&&(h>1 && (h%2) == 0))
   {
     array->result = haar1(r);
@@ -236,7 +237,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
   }
   else if ((haar == 3)&&(h>2 && (h%3) == 0))
   {
-    printf("fonction4deb !!!   ");
+    //printf("fonction4deb !!!   ");
     array->result = haar4(r);
     array->haar = 4;
     array->x = r->x;
@@ -244,7 +245,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
     array->size_h = r->size_h;
     array->size_w = r->size_w;
     //*res = array; 
-    printf("fonction 4"); 
+    //printf("fonction 4"); 
     return 1; 
   }
   else if ((haar == 4)&&((h>1) && (w>1) && ((h%2) == 0) && ((w%2) == 0)))
@@ -259,6 +260,7 @@ int case_h(struct haar *array, struct rect *r, int haar)
     return 1; 
    }
   else
+    //printf("no match \n");
     return 0; 
 }
 

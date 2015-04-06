@@ -17,12 +17,12 @@ int main(int argc, char *argv[])
     printf("%s\n", "bien joué");
     integrale(tab, img->w, img->h);
     unsigned long nb = 0; 
-    struct haar *haartab = malloc(163000*sizeof(struct haar)); 
+    struct haar *haartab = malloc(162336*sizeof(struct haar)); 
     printf("%lu \n", sizeof(*haartab)/sizeof(struct haar)); 
     // = fun_haar(tab, haartab);
     //nb = fun_haar(tab, haar);
     //printf("%lu \n", nb);
-    //int i; 
+    int i; 
     //for (i = 0; i < 20; i++)
     //  printf("%lu \n", haar[i].result);
     struct rect r;
@@ -36,9 +36,9 @@ int main(int argc, char *argv[])
     case_h(&haartab[1000], &r, haari);
     printf("%lu \n", haartab[1000].result); 
     nb = fun_haar(tab, haartab); 
-    //for(i = 100000; i < 101000; i++) 
-    //  printf("%ld \n", haartab[i].result); 
-    //printf("%lu \n", nb); 
+    for(i = 100000; i < 101000; i++) 
+      printf("%ld \n", haartab[i].result); 
+    printf("%lu \n", nb); 
     return 0; 
    }
 }
