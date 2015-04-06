@@ -16,10 +16,18 @@ struct list_haar{  // structure liste de haar
   int nb_haar;
 };
 
+struct stump{
+  long t; // Threshold
+  int T; //Toggle
+  long M; //Margin
+  float E; //Error
+};
+
+
 
 //n le nombre d'exemple, une liste de features et une liste de poids associés
 //t un threshold, T un toggle, m la marge, E l'erreur
-void decision_stump( struct list_haar *larray, struct weight *w, long t, int T,long M, float E)
+void decision_stump( struct list_haar *larray, struct weight *w,struct stump s)
 {
   //_______________________________________________________//
   //                     INITIALISATION                    //
@@ -28,11 +36,11 @@ void decision_stump( struct list_haar *larray, struct weight *w, long t, int T,l
   int n = larray->nb_haar;
   t = larray->array->result - 1; //Threshold
   long t' = t;
-  T = 0;                   //Toggle
-  int T' = T;
-  M = 0;                   //Margin
-  long m' = M;
-  E = 2;                   //Error
+  s->T = 0;                   //Toggle
+  int T' = s->T;
+  s->M = 0;                   //Margin
+  long m' = s->M;
+  s->E = 2;                   //Error
   float e';
   int j = 0;
   float Wp_1 = 0;    //Sommes des poids sur photos avec visage
@@ -74,10 +82,10 @@ void decision_stump( struct list_haar *larray, struct weight *w, long t, int T,l
 
     if ((e' < E) || ( e' == E && M = m'))
     {
-      E = e';
-      t = t';
-      M = m';
-      T = T';
+      s->E = e';
+      s->t = t';
+      s->M = m';
+      s->T = T';
     }
 
     if (j == n)
@@ -131,14 +139,12 @@ void decision_stump( struct list_haar *larray, struct weight *w, long t, int T,l
 void best-stump(struct list_haar *larray, struct weight *w, int d) // d nombre de features
 {
   int n = larray->nb_haar;
-  long t;
-  int T;
-  long M;
-  float E;
+  struct stump s;
+  s->E = 2;
 
   for (f = 1; f <= d; f++) //pour chaques features
   {
-    decision_stump(struct list_haar *larray, w, t, T, M, E);
+    decision_stump(larray, w, s);
 
     if ()
     {
@@ -153,7 +159,7 @@ long AdaBoost(struct list_haar *larray, int T)
   float alpha;
   long Et = 0;
   struct weight *w;
-  weight->poids = /*?*/;
+  weight->poids = 1 / larray->nb_haar;
 
   for (int t = 1; t <= T; t++) 
   {
