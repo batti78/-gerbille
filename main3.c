@@ -9,6 +9,12 @@ int main(int argc, char *argv[])
   {
     DIR *rep = NULL;
     rep = opendir( argv[1]);
-    closedir(rep);
+    printf("yolo\n");
+    if (rep == NULL)
+      printf("Dossier inexistant");
+    if (closedir(rep) == -1)
+      printf("Erreur fermeture");
   }
+  printf("yeah\n");
+  return 0;
 }
