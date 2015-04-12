@@ -2,8 +2,8 @@
 #include<SDL.h>
 #include<SDL_image.h>
 #include<SDL/SDL.h>
-#include"image.c"
 #include"haar.c"
+#include"image.c" 
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     unsigned long nb = 0; 
     struct haar *haartab = malloc(162336*sizeof(struct haar)); 
     printf("%lu \n", sizeof(*haartab)/sizeof(struct haar)); 
+    
     // = fun_haar(tab, haartab);
     //nb = fun_haar(tab, haar);
     //printf("%lu \n", nb);
@@ -39,6 +40,8 @@ int main(int argc, char *argv[])
     for(i = 100000; i < 101000; i++) 
       printf("%ld \n", haartab[i].result); 
     printf("%lu \n", nb); 
+     
+    printf("size of struct haar : %lu \n", sizeof(struct haar)); 
     return 0; 
    }
 }

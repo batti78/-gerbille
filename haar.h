@@ -3,6 +3,8 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include"rect.h" 
+
 
 //Structure contenue dans la liste de Haar-feature obtenue par la fonction to list. 
 
@@ -14,7 +16,7 @@ struct haar{
 };
 
 //structure déffinissant le rectangle dans lequel sont composé les haar-features. 
-
+/*
 struct rect{
   int x; 
   int y;
@@ -22,7 +24,7 @@ struct rect{
   int size_h;
   unsigned long **integ;
 };
-
+*/
 
 //Deffinition des différents entiers qui compose de réctangle dans lequel sont calculé les haar-features. 
 

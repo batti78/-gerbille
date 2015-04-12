@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"haar.h"
+#include"rect.h" 
 
 
 //Structure contenue dans la liste de Haar-feature obtenue par la fonction to list. 
