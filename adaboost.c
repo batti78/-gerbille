@@ -3,27 +3,27 @@
 #include "haar.c"
 #include "haar.h"
 
-
-struct weight{            // Structure pour les poids :
-  float poids;            // Sous forme de liste chainée
+/*
+struct weight{          
+  float poids;            
   struct weight *next;
-  int face;               //Si visage = 1 sinon = -1
+  int face;               
 };
 
-struct list_haar{  // structure liste de haar
+struct list_haar{ 
   struct haar *array;
   struct list_haar *next;
   int nb_haar;
 };
 
 struct stump{
-  long t; // Threshold
-  int T; //Toggle
-  long M; //Margin
-  float E; //Error
+  long t;   // Threshold
+  int T;    //Toggle
+  long M;   //Margin
+  float E;  //Error
 };
 
-
+*/
 
 //n le nombre d'exemple, une liste de features et une liste de poids associés
 //t un threshold, T un toggle, m la marge, E l'erreur
@@ -61,7 +61,7 @@ void decision_stump( struct list_haar *larray, struct weight *w,struct stump s)
   float Wm_m1 = 0;
 
   
-
+   //---------------------------------------------------//
   /* traitement */
 
   while (true)
@@ -80,7 +80,7 @@ void decision_stump( struct list_haar *larray, struct weight *w,struct stump s)
       T' = -1;
     }
 
-    if ((e' < E) || ( e' == E && M = m'))
+    if ((e' < s->E) || ( e' == s->E && s->M = m'))
     {
       s->E = e';
       s->t = t';
@@ -136,21 +136,27 @@ void decision_stump( struct list_haar *larray, struct weight *w,struct stump s)
 }
 
 
-void best-stump(struct list_haar *larray, struct weight *w, int d) // d nombre de features
+void best-stump(struct list_haar *larray, struct weight *w, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
 {
   int n = larray->nb_haar;
   struct stump s;
+  struct stump best;
   s->E = 2;
 
-  for (f = 1; f <= d; f++) //pour chaques features
+  while (larray)
   {
     decision_stump(larray, w, s);
 
-    if ()
+    if (s->E < 2 || best->M > s->M)
     {
-      //--?--//
+      best->E = s->E;
+      best->M = s->M;
     }
+
+    larray = larray->next;
   }
+
+  return best;
 }
 
 
@@ -159,19 +165,22 @@ long AdaBoost(struct list_haar *larray, int T)
   float alpha;
   long Et = 0;
   struct weight *w;
-  weight->poids = 1 / larray->nb_haar;
+  w->poids = 1 / larray->nb_haar;
+
+  struct stump *h;
 
   for (int t = 1; t <= T; t++) 
   {
-    best-stump(larray, w, 5);
-    while (w != NULL)
+    struct weight *tmp = w;
+    h = best-stump(larray, w, 5);
+    while (tmp != NULL)
     {
-      Et += w->poids;
-      w = w->next;
+      Et += tmp->poids;
+      tmp = tmp->next;
     }
 
     if (Et == 0 && t == 1)
-      return h1;
+      return h;
     else
     {
       alpha = 0.5 * ln ((1 - Et) / Et);
