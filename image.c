@@ -127,7 +127,6 @@ void gris_normalise(SDL_Surface *img)
       putpixel(img, y, x, SDL_MapRGB(img->format, med, med ,med));
     }
   }
-  printf("%s", "gris\n");
 }
 
 // convertit un tableau en image
