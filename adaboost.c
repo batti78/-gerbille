@@ -160,7 +160,7 @@ void best-stump(struct list_haar *larray, struct weight *w, int d) // d nombre d
 }
 
 
-long AdaBoost(struct list_haar *larray, int T)
+struct stump AdaBoost(struct list_haar *larray, int T)
 {
   float alpha;
   long Et = 0;
@@ -171,22 +171,30 @@ long AdaBoost(struct list_haar *larray, int T)
 
   for (int t = 1; t <= T; t++) 
   {
-    struct weight *tmp = w;
-    h = best-stump(larray, w, 5);
-    while (tmp != NULL)
+    struct list_haar *haar_tmp = larray;
+    while (haar_tmp)
     {
-      Et += tmp->poids;
-      tmp = tmp->next;
+      struct weight *tmp = w;
+      h = best-stump(larray, w, 5);
+      while (tmp != NULL)
+      {
+        Et += tmp->poids;
+        tmp = tmp->next;
+      }
+
+      if (Et == 0 && t == 1)
+        return h;
+      else
+      {
+        alpha = 0.5 * ln ((1 - Et) / Et);
+        w->next->poids = (w->poids / 2) * ((1 / Et) + (1 / (1 - Et))); 
+        w = w->next;
+      }
+      haar_tmp = haar_tmp->next
     }
 
-    if (Et == 0 && t == 1)
-      return h;
-    else
-    {
-      alpha = 0.5 * ln ((1 - Et) / Et);
-      w->next->poids = (w->poids / 2) * ((1 / Et) + (1 / (1 - Et))); 
-    }
   }
 
-  return /*?*/ ;
+  h->M = alpha * M;
+  return h ;
 }
