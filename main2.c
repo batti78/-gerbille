@@ -16,33 +16,34 @@ int main(int argc, char *argv[])
     char *path = argv[1];
     unsigned i = 1;
     char *name = NULL;
-    while ((name = get_nth_file_name(path, i)))
+    unsigned long **tab = NULL;
+    SDL_Surface *img = NULL;
+    struct rect *rec = malloc(sizeof(struct rect));
+    unsigned long **ada = NULL;
+
+    init_sdl();
+    while ((name = get_nth_file_name(path, i)) && strcmp(name, "break"))
     {
       printf("%s\n",name);
       i++;
-      init_sdl();
-      SDL_Surface *img = load_image(name);
+
+      img = load_image(name);
       gris_normalise(img);
-      unsigned long **tab = img_to_tab(img);
+      tab = img_to_tab(img);
 
       //integrale(tab, img->w, img->h);
 
-      struct rect *rec = malloc(sizeof(struct rect));
       rec->x = 200;
       rec->y = 200;
       rec->size_w = 200;
       rec->size_h = 200;
       rec->integ = tab; 
-      unsigned long** ada = adaboost_rect(rec);
+      ada = adaboost_rect(rec);
 
-      unsigned long **test = e_to_24(tab, img->w, img->h);
-      display_image(img);
-      display_image(tab_to_img(test, 24, 24));
-      display_image(tab_to_img(ada, 24, 24));
       for (unsigned i = 0; i < 24; i++)
-        free(test[i]);
-      for (unsigned j = 0; j < 24; j++)
-        free(ada[j]);
+      {
+        free(ada[i]);
+      }
       free(rec);
     }
 
