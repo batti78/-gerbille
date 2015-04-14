@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
     char *name = NULL;
     unsigned long **tab = NULL;
     SDL_Surface *img = NULL;
-    struct rect *rec = malloc(sizeof(struct rect));
     unsigned long **ada = NULL;
 
     init_sdl();
@@ -27,24 +26,20 @@ int main(int argc, char *argv[])
       printf("%s\n",name);
       i++;
 
+      // operation sur l image
       img = load_image(name);
       gris_normalise(img);
       tab = img_to_tab(img);
+      integrale(tab, img->w, img->h);
+      ada = e_to_24(tab, img->w, img->h);
 
-      //integrale(tab, img->w, img->h);
+      // appeler adaboost
+      
 
-      rec->x = 200;
-      rec->y = 200;
-      rec->size_w = 200;
-      rec->size_h = 200;
-      rec->integ = tab; 
-      ada = adaboost_rect(rec);
-
+      // free
       for (unsigned i = 0; i < 24; i++)
-      {
         free(ada[i]);
-      }
-      free(rec);
+      free(ada);
     }
 
     return 0; 
