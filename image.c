@@ -223,8 +223,10 @@ unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
         for (unsigned l = 0; l < 24; l++)
           big[i * 24 + k][j * 24 + l] = array[i][j];
     free(array[i]);
+    array[i] = NULL;
   }
   free(array);
+  array = NULL;
   // remplissage de la matrice 24*24 par moyennage des valeurs de big
   // libère big
 
@@ -241,8 +243,10 @@ unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
       ret[i][j] = med;
     }
     free(big[i]);
+    big[i] = NULL;
   }
   free(big);
+  big = NULL;
   return ret;
 }
 
@@ -251,7 +255,7 @@ unsigned long** e_to_24(unsigned long **array, unsigned w, unsigned h)
 unsigned long** adaboost_rect(struct rect *rec)
 {
   unsigned long **array = e_to_24(rect_to_tab(rec), rec->size_w, rec->size_h);
-  // array correspond au morceau delimite par le rect, ramene en 24*24
+  // array correspond au morceau delimite par le rect, ramené en 24*24
   // adaboost (array);
   return array;
 }

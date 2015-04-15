@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "haar.c"
 #include "haar.h"
+#include "adaboost.h"
 
 /*
 struct weight{          
@@ -27,21 +28,21 @@ struct stump{
 
 //n le nombre d'exemple, une liste de features et une liste de poids associés
 //t un threshold, T un toggle, m la marge, E l'erreur
-void decision_stump( struct list_haar *larray, struct weight *w,struct stump s)
+void decision_stump( struct list_haar *larray, struct weight *w,struct stump *s)
 {
   //_______________________________________________________//
   //                     INITIALISATION                    //
   //_______________________________________________________//
   
   int n = larray->nb_haar;
-  t = larray->array->result - 1; //Threshold
-  long t' = t;
+  long t = larray->array->result - 1; //Threshold
+  long t1 = t;
   s->T = 0;                   //Toggle
-  int T' = s->T;
+  int T1 = s->T;
   s->M = 0;                   //Margin
-  long m' = s->M;
+  long m1 = s->M;
   s->E = 2;                   //Error
-  float e';
+  float e1;
   int j = 0;
   float Wp_1 = 0;    //Sommes des poids sur photos avec visage
   float Wp_m1 = 0;   //Sommes des poids sur photos sans visage
@@ -64,28 +65,28 @@ void decision_stump( struct list_haar *larray, struct weight *w,struct stump s)
    //---------------------------------------------------//
   /* traitement */
 
-  while (true)
+  while (1)
   {
     float erreur_p = Wm_1 + Wp_m1;
     float erreur_m = Wm_m1 + Wp_1;
 
     if (erreur_p < erreur_m)
     {
-      e' = erreur_p;
-      T' = 1;
+      e1 = erreur_p;
+      T1 = 1;
     }
     else
     {
-      e' = erreur_m;
-      T' = -1;
+      e1 = erreur_m;
+      T1 = -1;
     }
 
-    if ((e' < s->E) || ( e' == s->E && s->M = m'))
+    if ((e1 < s->E) || ( e1 == s->E && s->M == m1))
     {
-      s->E = e';
-      s->t = t';
-      s->M = m';
-      s->T = T';
+      s->E = e1;
+      s->t = t1;
+      s->M = m1;
+      s->T = T1;
     }
 
     if (j == n)
@@ -95,7 +96,7 @@ void decision_stump( struct list_haar *larray, struct weight *w,struct stump s)
     tmp = tmp->next;
     larray = larray->next;
   }
-  while (true)
+  while (1)
   {
     if (w->face == -1)
     {
@@ -120,23 +121,23 @@ void decision_stump( struct list_haar *larray, struct weight *w,struct stump s)
 
   if (j == n)
   {
-    struct list_haar TMP = larray;
+    struct list_haar *TMP = larray;
     while (TMP->next != NULL)
       TMP = TMP->next;
 
-    t' = TMP->array->result + 1;
-    m' = 0;
+    t1 = TMP->array->result + 1;
+    m1 = 0;
   }
   else 
   {
-    t' = (larray->array->result + larray->next->array->result) / 2 ;
-    m' = larray->next->result - larray->result;
+    t1 = (larray->array->result + larray->next->array->result) / 2 ;
+    m1 = larray->next->result - larray->result;
   }
 
 }
 
 
-void best-stump(struct list_haar *larray, struct weight *w, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
+void best_stump(struct list_haar *larray, struct weight *w, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
 {
   int n = larray->nb_haar;
   struct stump s;
@@ -175,7 +176,7 @@ struct stump AdaBoost(struct list_haar *larray, int T)
     while (haar_tmp)
     {
       struct weight *tmp = w;
-      h = best-stump(larray, w, 5);
+      h = best_stump(larray, w, 5);
       while (tmp != NULL)
       {
         Et += tmp->poids;

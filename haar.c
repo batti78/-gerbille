@@ -179,7 +179,7 @@ unsigned long fun_haar(unsigned long **integ, struct haar *ret)
             //printf("%d \n", nhaar);
             b = case_h(&ret[n], &r, nhaar);
             //printf("%d \n", b);
-            //printf("%lu  %lu %d %d %d %d \n",n ,ret[1].result, y , x, h ,w); 
+            printf("%lu  %lu %d %d %d %d \n",n ,ret[1].result, y , x, h ,w); 
             if (b != 0)
               n++; 
           }

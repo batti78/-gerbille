@@ -21,11 +21,11 @@ char* get_nth_file_name(char* dir_name, unsigned n)
 
   if(fichier)
   {
-  strcpy(patherase, dir_name);
-  name = fichier->d_name;
-  if (closedir(rep) == -1)
-    printf("Erreur fermeture");
-  return strcat(patherase,name);
+    strcpy(patherase, dir_name);
+    name = fichier->d_name;
+    if (closedir(rep) == -1)
+      printf("Erreur fermeture");
+    return strcat(patherase,name);
   }
   else
     return "break";
