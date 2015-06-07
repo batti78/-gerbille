@@ -6,7 +6,6 @@
 
 char* get_nth_file_name(char* dir_name, unsigned n)
 {
-  printf("used %d time\n", n);
   char *name = malloc(sizeof(char*));
   char *patherase = malloc(sizeof(char*));
   DIR *rep = NULL;
@@ -21,6 +20,7 @@ char* get_nth_file_name(char* dir_name, unsigned n)
 
   if(fichier)
   {
+    printf("used %d time\n", n);
     strcpy(patherase, dir_name);
     name = fichier->d_name;
     if (closedir(rep) == -1)

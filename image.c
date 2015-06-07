@@ -157,6 +157,8 @@ unsigned long** rect_to_tab(struct rect *rec)
     for (unsigned j = 0; (int) j < rec->size_w; j++)
       array[i][j] = rec->integ[rec->y + i][rec->x + j];
   }
+  free(rec);
+  rec = NULL;
   return array;
 }
 
@@ -199,6 +201,8 @@ unsigned long** img_to_tab(SDL_Surface *img)
       array[i][j] = (unsigned long) r;
     }
   }
+  free(img);
+  img = NULL;
   return array;
 }
 
