@@ -3,7 +3,8 @@
 #include<SDL_image.h>
 #include<SDL/SDL.h>
 #include"haar.c"
-#include"image.c" 
+#include"image.c"
+#include"adaboost.c"
 
 int main(int argc, char *argv[])
 {
@@ -16,32 +17,21 @@ int main(int argc, char *argv[])
     unsigned long **tab = img_to_tab(img);
     printf("%s\n", "bien joué");
     integrale(tab, img->w, img->h);
-    unsigned long nb = 0; 
-    struct haar *haartab = malloc(162336*sizeof(struct haar)); 
-    printf("%lu \n", sizeof(*haartab)/sizeof(struct haar)); 
-    
-    // = fun_haar(tab, haartab);
-    //nb = fun_haar(tab, haar);
-    //printf("%lu \n", nb);
+    unsigned long nb = 0;
+    unsigned long *array = malloc(162336 * sizeof(unsigned long));
+    unsigned long *array2 = malloc(162336 * sizeof(unsigned long));
+    unsigned long *array3 = malloc(162336 * sizeof(unsigned long)); 
+    nb = fun_haar(tab, array);
+    nb = fun_haar(tab, array2); 
+    nb = fun_haar(tab, array3);
+    struct list_haar *larray = malloc(3 * sizeof(struct list_haar));
+
     int i; 
-    //for (i = 0; i < 20; i++)
-    //  printf("%lu \n", haar[i].result);
-    struct rect r;
-    r.x = 0;
-    r.y = 0;
-    r.size_h = 3;
-    r.size_w = 1;
-    r.integ = tab;
-    int haari = 3;
-    printf("before case_h"); 
-    case_h(&haartab[1000], &r, haari);
-    printf("%lu \n", haartab[1000].result); 
-    nb = fun_haar(tab, haartab); 
     for(i = 100000; i < 101000; i++) 
-      printf("%ld \n", haartab[i].result); 
+      printf("%ld \n", array[i]); 
     printf("%lu \n", nb); 
      
-    printf("size of struct haar : %lu \n", sizeof(struct haar)); 
+    printf("size of struct array : %lu \n", sizeof(array)); 
     return 0; 
    }
 }

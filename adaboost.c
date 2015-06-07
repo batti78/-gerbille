@@ -3,16 +3,12 @@
 #include "haar.c"
 #include "haar.h"
 #include "adaboost.h"
+#include "math.h" 
 
 /*
-struct weight{          
-  float poids;            
-  struct weight *next;
-  int face;               
-};
-
 struct list_haar{ 
   struct haar *array;
+  int face; 
   struct list_haar *next;
   int nb_haar;
 };
@@ -28,38 +24,47 @@ struct stump{
 
 //n le nombre d'exemple, une liste de features et une liste de poids associés
 //t un threshold, T un toggle, m la marge, E l'erreur
-void decision_stump( struct list_haar *larray, struct weight *w,struct stump *s)
+struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long n, unsigned nbex)
 {
   //_______________________________________________________//
   //                     INITIALISATION                    //
   //_______________________________________________________//
-  
-  int n = larray->nb_haar;
-  long t = larray->array->result - 1; //Threshold
-  long t1 = t;
-  s->T = 0;                   //Toggle
-  int T1 = s->T;
-  s->M = 0;                   //Margin
-  long m1 = s->M;
-  s->E = 2;                   //Error
-  float e1;
-  int j = 0;
-  float Wp_1 = 0;    //Sommes des poids sur photos avec visage
-  float Wp_m1 = 0;   //Sommes des poids sur photos sans visage
-  struct weight *tmp = w;
-
-  while (w != NULL)
+  //
+  long t1 = larray->array[0]; //Threshold
+  int i;
+  struct list_haar *tmp = larray; 
+  for (i = 0; i < 162336; i++)
   {
-    if (w->face == 1)
-      Wp_1 += w->poids;
-    else
-      Wp_m1 += w->poids;
-
-    w = w->next;
+    if (tmp->array[i] < t)
+      t1 = tmp->array[i];
+    tmp = tmp->next; 
   }
+  t1--;
+  tmp = larray; 
+  
+  float Wp_1 = 1, Wp_m1 = -1, Wm_1 = 0, Wm_m1 = 0; 
+  /*for(i = 0; i < 162366; i++)
+  {
+    if(larray->array[i] >= t)
+      W_plus = W_plus + w;
+  }*/
+  /*unsigned float W_less = 0;
+  for(i = 0; i < 162366; i++)
+  {
+    if(larray->array[i] < t)
+      W_less = W_less + w; 
+  }*/
+  //unsigned float W_less = 0; 
 
-  float Wm_1 = 0;
-  float Wm_m1 = 0;
+  struct stump *s = malloc(sizeof(struct stump)); 
+  unsigned long j = 0;
+  s->t = t;
+  float e1 = 2;
+  s->E = e1;
+  long m1 = 0; 
+  s->M = m1;
+  int T1 = 0;
+  s->T = T1; 
 
   
    //---------------------------------------------------//
@@ -89,83 +94,85 @@ void decision_stump( struct list_haar *larray, struct weight *w,struct stump *s)
       s->T = T1;
     }
 
-    if (j == n)
+    if (j == nbex)
       break;
 
     j++;
     tmp = tmp->next;
-    larray = larray->next;
-  }
-  while (1)
-  {
-    if (w->face == -1)
+  
+    while (1)
     {
-      Wm_m1 += tmp->poids;
-      Wp_m1 += tmp->poids;
-    } 
-    else
-    {
-      Wm_1 += tmp->poids;
-      Wp_1 += tmp->poids;
+      if (tmp->face == -1)
+      {
+        Wm_m1 += w[n];
+        Wp_m1 += w[n];
+      } 
+      else
+      {
+        Wm_1 += w[n];
+        Wp_1 += w[n];
+      }
+
+      if (j == nbex || larray->array != larray->next->array)
+        break;
+      else
+      {
+        j++;
+        tmp = tmp->next;
+      }
     }
 
-    if (j == n || larray->array != larray->next->array)
-      break;
-    else
+    if (j == nbex)
     {
-      j++;
-      tmp = tmp->next;
-      larray = larray->next;
+      struct list_haar *TMP = larray; 
+      while (TMP != NULL)
+      {
+        if (t1 < TMP->array[n])
+          t1 = TMP->array[n];
+        TMP = TMP->next;
+      }
+      t1++;
+      m1 = 0;
+    }
+    else 
+    {
+      t1 = (tmp->array[n] + tmp->next->array[n]) / 2 ;
+      m1 = tmp->next->array[n] - larray->array[n];
     }
   }
-
-  if (j == n)
-  {
-    struct list_haar *TMP = larray;
-    while (TMP->next != NULL)
-      TMP = TMP->next;
-
-    t1 = TMP->array->result + 1;
-    m1 = 0;
-  }
-  else 
-  {
-    t1 = (larray->array->result + larray->next->array->result) / 2 ;
-    m1 = larray->next->result - larray->result;
-  }
-
+  return s; 
 }
 
 
-void best_stump(struct list_haar *larray, struct weight *w, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
+struct stump *best_stump(struct list_haar *larray, float *w, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
 {
-  int n = larray->nb_haar;
-  struct stump s;
-  struct stump best;
-  s->E = 2;
-
-  while (larray)
+  //int n = larray->nb_haar; //numero du tableau d'image  
+  struct stump *best = malloc(sizeof(struct stump));
+  best->E = 2;
+  int i = 1; 
+  while (i <= d) 
   {
-    decision_stump(larray, w, s);
+    struct stump *s = decision_stump(larray, w, i, nbex);
 
-    if (s->E < 2 || best->M > s->M)
+    if (s->E < best->E)
     {
-      best->E = s->E;
-      best->M = s->M;
+      best = s; 
     }
-
-    larray = larray->next;
+    if(s->E == best->E)
+      if(s->M > best->M)
+        best = s; 
+    i++;
   }
 
   return best;
 }
 
 
-struct stump AdaBoost(struct list_haar *larray, int T)
+struct stump *AdaBoost(struct list_haar *larray, int T)
 {
   float alpha;
   long Et = 0;
-  struct weight *w;
+  float *w; 
   w->poids = 1 / larray->nb_haar;
 
   struct stump *h;
@@ -187,15 +194,15 @@ struct stump AdaBoost(struct list_haar *larray, int T)
         return h;
       else
       {
-        alpha = 0.5 * ln ((1 - Et) / Et);
+        alpha = 0.5 * log ((1 - Et) / Et);
         w->next->poids = (w->poids / 2) * ((1 / Et) + (1 / (1 - Et))); 
         w = w->next;
       }
-      haar_tmp = haar_tmp->next
+      haar_tmp = haar_tmp->next;
     }
 
   }
 
-  h->M = alpha * M;
+  h->M = alpha * h->M;
   return h ;
 }
