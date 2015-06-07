@@ -12,5 +12,11 @@ struct rect {
   unsigned long **integ;  
 };
 
+struct list_haar{
+  unsigned long *array;
+  int face;
+  int ieme;
+  struct list_haar *next;
+};
 
 #endif
