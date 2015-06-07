@@ -20,7 +20,7 @@ char* get_nth_file_name(char* dir_name, unsigned n)
 
   if(fichier)
   {
-    printf("used %d time\n", n);
+    //printf("used %d time\n", n);
     strcpy(patherase, dir_name);
     name = fichier->d_name;
     if (closedir(rep) == -1)
