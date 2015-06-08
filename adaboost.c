@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "haar.c"
-#include "haar.h"
+#include <math.h> 
+#include "rect.h" 
+#include "data.h" 
 #include "adaboost.h"
-#include "math.h" 
+
 
 /*
 struct list_haar{ 
@@ -35,7 +36,7 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
   struct list_haar *tmp = larray; 
   for (i = 0; i < 162336; i++)
   {
-    if (tmp->array[i] < t)
+    if (tmp->array[i] < t1)
       t1 = tmp->array[i];
     tmp = tmp->next; 
   }
@@ -58,7 +59,7 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
 
   struct stump *s = malloc(sizeof(struct stump)); 
   unsigned long j = 0;
-  s->t = t;
+  s->t = t1;
   float e1 = 2;
   s->E = e1;
   long m1 = 0; 
@@ -144,7 +145,7 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
 }
 
 
-struct stump *best_stump(struct list_haar *larray, float *w, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
+struct stump *best_stump(struct list_struct  *larray, float *w, int nbex, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
 {
   //int n = larray->nb_haar; //numero du tableau d'image  
   struct stump *best = malloc(sizeof(struct stump));
@@ -168,41 +169,36 @@ struct stump *best_stump(struct list_haar *larray, float *w, int d) // d nombre 
 }
 
 
-struct stump *AdaBoost(struct list_haar *larray, int T)
+void adaBoost(struct list_haar *larray, int nbex, int T)
 {
-  float alpha;
+  float alpha[T];
+  int x; 
+  for(x = 0; x < T; x++)
+    alpha[x] = 1; 
   long Et = 0;
-  float *w; 
-  w->poids = 1 / larray->nb_haar;
+  float *w;
+  int i, j; 
 
-  struct stump *h;
+  struct stump (*h)[T]; 
 
   for (int t = 1; t <= T; t++) 
   {
     struct list_haar *haar_tmp = larray;
-    while (haar_tmp)
-    {
-      struct weight *tmp = w;
-      h = best_stump(larray, w, 5);
-      while (tmp != NULL)
+      float *tmp = w;
+      h = best_stump(larray, w, nbex, 162336);
+      for (j = 0; j < nbex; j++)
       {
-        Et += tmp->poids;
-        tmp = tmp->next;
+        Et += w[j];
       }
 
       if (Et == 0 && t == 1)
-        return h;
+        write_data(h, 1); 
       else
-      {
+      { 
         alpha = 0.5 * log ((1 - Et) / Et);
-        w->next->poids = (w->poids / 2) * ((1 / Et) + (1 / (1 - Et))); 
-        w = w->next;
+        for(j = 0; j < nbex; j++ )
+          w[j] = (w[j] / 2) * ((1 / Et) + (1 / (1 - Et)));
       }
-      haar_tmp = haar_tmp->next;
-    }
-
   }
-
-  h->M = alpha * h->M;
-  return h ;
+  write_data(h, alpha); 
 }

@@ -1,21 +1,11 @@
-#include "haar.h"
+#ifndef ADABOOST_H 
+#define ADABOOST_H 
 
-struct weight{             //structure pour les poids
-  float poids;             //sous forme de list chainée
-  struct weight *next;
-  int face;                //Si visage = 1 sinon -1 
-};
+struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n, unsigned nbex);
 
-struct list_haar{   //structure liste de haar
-  struct haar *array;
-  struct list_haar *next;
-  int nb_haar;
-};
+struct stump *best_stump(struct list_haar *larray, float *w , int nbex, int d);
+
+void adaboost(struct list_haar *larray, int nbex, int T);
 
 
-struct stump{
-  long t;    //Treshold
-  int T;     //Toggle
-  long M;    //Margin
-  float E;   //Error
-};
+#endif

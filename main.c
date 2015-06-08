@@ -2,6 +2,7 @@
 #include<SDL.h>
 #include<SDL_image.h>
 #include<SDL/SDL.h>
+#include"rect.h" 
 #include"haar.c"
 #include"image.c"
 #include"adaboost.c"
@@ -24,8 +25,18 @@ int main(int argc, char *argv[])
     nb = fun_haar(tab, array);
     nb = fun_haar(tab, array2); 
     nb = fun_haar(tab, array3);
-    struct list_haar *larray = malloc(3 * sizeof(struct list_haar));
-
+    struct list_haar *larray;
+    struct list_haar tmp1, tmp2, tmp3;
+    tmp1.array = array;
+    tmp1.nb = 1; 
+    tmp1.next = tmp2;
+    tmp2.array = array2; 
+    tmp2.nb = 2; 
+    tmp2.next = tmp3;
+    tmp3.array = array3;
+    tmp3.nb = 3;
+    larray = &tmp1; 
+    adaboost(larray, 3, 2); 
     int i; 
     for(i = 100000; i < 101000; i++) 
       printf("%ld \n", array[i]); 

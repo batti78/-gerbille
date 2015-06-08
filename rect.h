@@ -13,10 +13,16 @@ struct rect {
 };
 
 struct list_haar{
-  unsigned long *array;
+  long *array;
   int face;
   int ieme;
   struct list_haar *next;
 };
 
+struct stump{
+  long t;
+  int T;
+  long M; 
+  float E; 
+};
 #endif
