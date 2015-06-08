@@ -9,7 +9,7 @@ void parcours(unsigned long **array, unsigned w, unsigned h)
       for (unsigned i1 = 24; i1 < w - i; i1++)
         for (unsigned j1 = 24; j1 < h - j; j1++)
         {
-          // est-ce que le carré de dim i1xj1 est un visage ?
+          // intégralisation
           // si oui dessine un carré noir sinon rien
           if (visage)
           {
