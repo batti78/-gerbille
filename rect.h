@@ -19,4 +19,10 @@ struct list_haar{
   struct list_haar *next;
 };
 
+struct stump{
+  long t;
+  int T;
+  long M; 
+  float E; 
+};
 #endif
