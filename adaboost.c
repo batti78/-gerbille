@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h> 
 #include "rect.h" 
+#include "data.h" 
 #include "adaboost.h"
 
 
@@ -35,7 +36,7 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
   struct list_haar *tmp = larray; 
   for (i = 0; i < 162336; i++)
   {
-    if (tmp->array[i] < t)
+    if (tmp->array[i] < t1)
       t1 = tmp->array[i];
     tmp = tmp->next; 
   }
@@ -58,7 +59,7 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
 
   struct stump *s = malloc(sizeof(struct stump)); 
   unsigned long j = 0;
-  s->t = t;
+  s->t = t1;
   float e1 = 2;
   s->E = e1;
   long m1 = 0; 
@@ -144,7 +145,7 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
 }
 
 
-struct stump *best_stump(float *larray, float *w, int nbex, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
+struct stump *best_stump(struct list_struct  *larray, float *w, int nbex, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
 {
   //int n = larray->nb_haar; //numero du tableau d'image  
   struct stump *best = malloc(sizeof(struct stump));
@@ -183,10 +184,8 @@ void adaBoost(struct list_haar *larray, int nbex, int T)
   for (int t = 1; t <= T; t++) 
   {
     struct list_haar *haar_tmp = larray;
-    for( i = 0; i < T, i++)
-    {
       float *tmp = w;
-      h = best_stump(larray, w, 5);
+      h = best_stump(larray, w, nbex, 162336);
       for (j = 0; j < nbex; j++)
       {
         Et += w[j];
@@ -195,14 +194,11 @@ void adaBoost(struct list_haar *larray, int nbex, int T)
       if (Et == 0 && t == 1)
         write_data(h, 1); 
       else
-      {
-        h
+      { 
         alpha = 0.5 * log ((1 - Et) / Et);
         for(j = 0; j < nbex; j++ )
-          w[j] = (w[j] / 2) * ((1 / Et) + (1 / (1 - Et))); 
-        w = w->next;
+          w[j] = (w[j] / 2) * ((1 / Et) + (1 / (1 - Et)));
       }
-    }
   }
   write_data(h, alpha); 
 }

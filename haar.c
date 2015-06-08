@@ -154,7 +154,7 @@ long haar5(struct rect *rect) {
 
 //integ = 24*24 (!) 
 
-unsigned long fun_haar(unsigned long **integ, unsigned long *ret)
+unsigned long fun_haar(unsigned long **integ, long *ret)
 {
   //struct haar array[163000];
   int x, y, h, w, nhaar, b;
@@ -192,7 +192,7 @@ unsigned long fun_haar(unsigned long **integ, unsigned long *ret)
 }
 
 
-int case_h(unsigned long *array, struct rect *r, int haar, unsigned long n)
+int case_h( long *array, struct rect *r, int haar, unsigned long n)
 {
   //printf("tout au début de case_h");
   //struct haar array;
