@@ -13,7 +13,7 @@ char* get_nth_file_name(char* dir_name, unsigned n)
   rep = opendir(dir_name);
 
   if (rep == NULL)
-    printf("Dossier inexistant");
+    printf("Dossier inexistant\n");
 
   for (unsigned i = 0; i < n + 2; i++)
     fichier = readdir(rep);
@@ -24,7 +24,7 @@ char* get_nth_file_name(char* dir_name, unsigned n)
     strcpy(patherase, dir_name);
     name = fichier->d_name;
     if (closedir(rep) == -1)
-      printf("Erreur fermeture");
+      printf("Erreur fermeture\n");
     return strcat(patherase,name);
   }
   else

@@ -10,11 +10,11 @@
 #include"dir_functions.c"
 #include"haar.c"
 
-int main(int argc, char *argv[])
+int main()//(int argc, char *argv[])
 {
-  if(argc == 2)
+  //if(argc == 2)
   {
-    char *path = argv[1];
+    char *path = "database/";//= argv[1];
     unsigned i = 1;
     char *name = NULL;
     unsigned long **tab = NULL;
@@ -33,16 +33,16 @@ int main(int argc, char *argv[])
 
       // operation sur l image
       img = load_image(name);
-      printf("loaded\n");
+      //printf("loaded\n");
 
       //display_image(img);
 
       gris_normalise(img);
-      printf("normalized\n");
+      //printf("normalized\n");
       tab = img_to_tab(img);
-      printf("img to tab\n");
+      //printf("img to tab\n");
       integrale(tab, 24, 24);
-      printf("integralized\n");   
+      //printf("integralized\n");   
       //printf("e to 24\n");
       // appeler adaboost
       /*
@@ -63,8 +63,8 @@ int main(int argc, char *argv[])
       // free
       for (unsigned i1 = 0; i1 < 24; i1++)
       {
-        free(tab[i]);
-        tab[i] = NULL;
+        free(tab[i1]);
+        tab[i1] = NULL;
       }
       printf("free\n");
       free(tab);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
       //free(haar);
       //haar = NULL;
       
-      name = NULL;
+      //name = NULL;
       printf("%d\n",i);
       i++;
     }
