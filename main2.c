@@ -9,6 +9,7 @@
 #include<string.h>
 #include"dir_functions.c"
 #include"haar.c"
+#include"detection.c"
 
 int main(int argc, char *argv[])
 {
