@@ -28,5 +28,10 @@ char* get_nth_file_name(char* dir_name, unsigned n)
     return strcat(patherase,name);
   }
   else
+  {
+    if (closedir(rep) == -1)
+      printf("Erreur fermeture\n");
     return "break";
+  }
 }
+
