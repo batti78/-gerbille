@@ -4,7 +4,7 @@ CC=clang
 CPPFLAGS= `pkg-config --cflags sdl gtk+-3.0`
 CFLAGS= -Wall -Wextra -Werror -std=c99 -O3
 LDFLAGS=
-LDLIBS= `pkg-config --libs sdl gtk+-3.0` -lSDL_image 
+LDLIBS= `pkg-config --libs sdl gtk+-3.0` -lSDL_image -lm
 SRC= main.c
 SRC2= main2.c
 SRC3= main3.c
