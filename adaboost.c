@@ -31,7 +31,7 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
   //                     INITIALISATION                    //
   //_______________________________________________________//
   //
-  //printf("lancement de decision stump");
+  printf("lancement de decision stump");
   long t1 = larray->array[0]; //Threshold
   struct list_haar *tmp = larray; 
   while(tmp) 
@@ -42,7 +42,7 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
   }
   t1--;
   tmp = larray; 
-  //printf("apres le while \n");  
+  printf("apres le while \n");  
   float Wp_1 = 1, Wp_m1 = -1, Wm_1 = 0, Wm_m1 = 0; 
   /*for(i = 0; i < 162366; i++)
   {
@@ -67,13 +67,13 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
   int T1 = 0;
   s->T = T1; 
 
-  //printf("end of init\n");  
+  printf("end of init\n");  
    //---------------------------------------------------//
   /* traitement */
 
   while (1)
   {
-    //printf("dans le while 1\n"); 
+    printf("dans le while 1 %lu\n", j); 
     float erreur_p = Wm_1 + Wp_m1;
     float erreur_m = Wm_m1 + Wp_1;
 
@@ -101,7 +101,7 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
 
     while (1)
     {
-      //printf("dans le deuxieme while\n"); 
+      printf("dans le deuxieme while %lu\n", j); 
       if (tmp->face == -1)
       {
         Wm_m1 += w[n];
@@ -112,15 +112,15 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
         Wm_1 += w[n];
         Wp_1 += w[n];
       }
-      //printf("juste avant le break\n"); 
+      printf("juste avant le break\n"); 
       if (j == nbex || larray->array[j] != larray->next->array[j])
         break;
       else
       {
         j++;
-        //printf("%lu\n", j); 
+        printf("%lu\n", j); 
         tmp = tmp->next;
-        //printf("%d\n", tmp->ieme); 
+        printf("%d\n", tmp->ieme); 
       }
     }
 
@@ -128,7 +128,7 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
     {
       struct list_haar *TMP = larray; 
       //fflush(stdout); 
-      //printf("juste avant le trosieme while  \n"); 
+      printf("juste avant le trosieme while  \n"); 
       while (TMP != NULL)
       {
         if (t1 < TMP->array[n])

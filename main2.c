@@ -11,11 +11,11 @@
 #include"adaboost.c"
 #include"haar.c" 
 
-int main(void)//(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-  //if(argc == 2)
+  if(argc == 2)
   {
-    char *path = "database/";//argv[1];
+    char *path = argv[1];
     unsigned i = 1;
     unsigned count = 1;
     char *name = NULL;
@@ -83,7 +83,7 @@ int main(void)//(int argc, char *argv[])
       i++;
     }
 
-    //adaboost(list->next, 303, 1);
+    adaboost(list->next, 303, 1);
 
     /*
        tmp = list;
