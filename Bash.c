@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "dir_functions.c" //get_nth_file_name(name_fichier, i)
 
-int main (int argc, char *argv[])
+int write (void)
 {
   FILE* fichier = NULL;
   fichier = fopen ("dl_pic.cvs", "w+");
@@ -12,7 +12,12 @@ int main (int argc, char *argv[])
     for (int i = 1, i <= 151, i++)
     {
         char* name-fichier = get_nth_name(database, i);
-        fputs(name_fichier, fichier);
+        char* token;
+        char* tmp = strtok (name-fichier, "/");
+        tmp = strtok (NULL, " ");
+        
+        fputs(name-fichier, fichier);
+        fputs(";" + tmp + "\n", fichier);
     }
     fclose(fichier);
   }
