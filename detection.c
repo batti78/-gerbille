@@ -8,8 +8,8 @@ void parcours(unsigned long **array, unsigned w, unsigned h)
   float coef_h = h / 24;
   for (unsigned i = 0; i < w; i++)
     for (unsigned j = 0; j < h; j++)
-      for (unsigned i1 = 24; i1 < w - i; i1 = i1 + coef_w)
-        for (unsigned j1 = 24; j1 < h - j; j1 = j1 + coef_h)
+      for (unsigned i1 = 24; i1 < w - i - 24; i1 = i1 + coef_w)
+        for (unsigned j1 = 24; j1 < h - j - 24; j1 = j1 + coef_h)
         {
           // mise à jour de visage
           // si visage dessine un carré noir sinon rien

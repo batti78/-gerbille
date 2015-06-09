@@ -55,7 +55,8 @@ int main(int argc, char *argv[])
         tmp = malloc(sizeof(struct list_haar*));
         tmp->next = list->next;
         list->next = tmp;
-        tmp->face = 1;
+        tmp->face = (name[9] == 's');
+        //printf("%d\n", tmp->face);
         tmp->ieme = count;
         tmp->array = haar;
         //free(tmp);

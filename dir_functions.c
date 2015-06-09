@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"dir_functions.h"
+#include<string.h>
 
 char* get_nth_file_name(char* dir_name, unsigned n)
 {
