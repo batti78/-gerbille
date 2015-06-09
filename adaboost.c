@@ -145,7 +145,7 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
 }
 
 
-struct stump *best_stump(struct list_struct  *larray, float *w, int nbex, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
+struct stump *best_stump(struct list_haar  *larray, float *w, int nbex, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
 {
   //int n = larray->nb_haar; //numero du tableau d'image  
   struct stump *best = malloc(sizeof(struct stump));
@@ -171,24 +171,22 @@ struct stump *best_stump(struct list_struct  *larray, float *w, int nbex, int d)
 
 void adaBoost(struct list_haar *larray, int nbex, int T)
 {
-  float alpha[T];
-  int x; 
-  for(x = 0; x < T; x++)
-    alpha[x] = 1; 
+  float alpha = 1;    
   long Et = 0;
-  float *w;
+  float *w = malloc(sizeof(float)); 
+  *w = (1/(float)nbex); 
   int i, j; 
 
-  struct stump (*h)[T]; 
+  struct stump *h; 
 
   for (int t = 1; t <= T; t++) 
   {
-    struct list_haar *haar_tmp = larray;
-      float *tmp = w;
+    //struct list_haar *haar_tmp = larray;
+      //float *tmp = w;
       h = best_stump(larray, w, nbex, 162336);
-      for (j = 0; j < nbex; j++)
+      for (i = 0; i < nbex; i++)
       {
-        Et += w[j];
+        Et += w[i];
       }
 
       if (Et == 0 && t == 1)
