@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h> 
 #include "rect.h" 
-#include "data.h" 
+#include "data.c" 
 #include "adaboost.h"
 
 
@@ -25,24 +25,24 @@ struct stump{
 
 //n le nombre d'exemple, une liste de features et une liste de poids associés
 //t un threshold, T un toggle, m la marge, E l'erreur
-struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long n, unsigned nbex)
+struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n, unsigned nbex)//n, le feature sur lequel on bosse, nb ex le nb d'exemple 
 {
   //_______________________________________________________//
   //                     INITIALISATION                    //
   //_______________________________________________________//
   //
+  //printf("lancement de decision stump");
   long t1 = larray->array[0]; //Threshold
-  int i;
   struct list_haar *tmp = larray; 
-  for (i = 0; i < 162336; i++)
+  while(tmp) 
   {
-    if (tmp->array[i] < t1)
-      t1 = tmp->array[i];
+    if (tmp->array[n] < t1)
+      t1 = tmp->array[n];
     tmp = tmp->next; 
   }
   t1--;
   tmp = larray; 
-  
+  //printf("apres le while \n");  
   float Wp_1 = 1, Wp_m1 = -1, Wm_1 = 0, Wm_m1 = 0; 
   /*for(i = 0; i < 162366; i++)
   {
@@ -58,7 +58,7 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
   //unsigned float W_less = 0; 
 
   struct stump *s = malloc(sizeof(struct stump)); 
-  unsigned long j = 0;
+  unsigned long j = 1;
   s->t = t1;
   float e1 = 2;
   s->E = e1;
@@ -67,12 +67,13 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
   int T1 = 0;
   s->T = T1; 
 
-  
+  //printf("end of init\n");  
    //---------------------------------------------------//
   /* traitement */
 
   while (1)
   {
+    //printf("dans le while 1\n"); 
     float erreur_p = Wm_1 + Wp_m1;
     float erreur_m = Wm_m1 + Wp_1;
 
@@ -98,11 +99,9 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
     if (j == nbex)
       break;
 
-    j++;
-    tmp = tmp->next;
-  
     while (1)
     {
+      //printf("dans le deuxieme while\n"); 
       if (tmp->face == -1)
       {
         Wm_m1 += w[n];
@@ -113,19 +112,23 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
         Wm_1 += w[n];
         Wp_1 += w[n];
       }
-
-      if (j == nbex || larray->array != larray->next->array)
+      //printf("juste avant le break\n"); 
+      if (j == nbex || larray->array[j] != larray->next->array[j])
         break;
       else
       {
         j++;
+        //printf("%lu\n", j); 
         tmp = tmp->next;
+        //printf("%d\n", tmp->ieme); 
       }
     }
 
     if (j == nbex)
     {
       struct list_haar *TMP = larray; 
+      //fflush(stdout); 
+      //printf("juste avant le trosieme while  \n"); 
       while (TMP != NULL)
       {
         if (t1 < TMP->array[n])
@@ -147,12 +150,14 @@ struct stump *decision_stump(struct list_haar *larray, float  *w, unsigned long 
 
 struct stump *best_stump(struct list_haar  *larray, float *w, int nbex, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
 {
+ //printf(" **** lancement de best stump **** \n\n"); 
   //int n = larray->nb_haar; //numero du tableau d'image  
   struct stump *best = malloc(sizeof(struct stump));
   best->E = 2;
-  int i = 1; 
-  while (i <= d) 
+  int i = 0; 
+  while (i < d) 
   {
+   // printf("dans le while de best stump\n");
     struct stump *s = decision_stump(larray, w, i, nbex);
 
     if (s->E < best->E)
@@ -161,7 +166,10 @@ struct stump *best_stump(struct list_haar  *larray, float *w, int nbex, int d) /
     }
     if(s->E == best->E)
       if(s->M > best->M)
+      {
         best = s; 
+        best->coord = i; 
+      }
     i++;
   }
 
@@ -169,11 +177,12 @@ struct stump *best_stump(struct list_haar  *larray, float *w, int nbex, int d) /
 }
 
 
-void adaBoost(struct list_haar *larray, int nbex, int T)
+void adaboost(struct list_haar *larray, int nbex, int T)
 {
+  //printf("******lancement d'adaboost****\n\n");  
   float alpha = 1;    
   long Et = 0;
-  float *w = malloc(sizeof(float)); 
+  float *w = malloc(nbex * sizeof(float)); 
   *w = (1/(float)nbex); 
   int i, j; 
 

@@ -23,6 +23,8 @@ struct stump{
   long t;
   int T;
   long M; 
-  float E; 
+  float E;
+  unsigned long coord; 
 };
+
 #endif
