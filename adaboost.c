@@ -31,7 +31,7 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
   //                     INITIALISATION                    //
   //_______________________________________________________//
   //
-  printf("lancement de decision stump");
+  //printf("lancement de decision stump");
   long t1 = larray->array[0]; //Threshold
   struct list_haar *tmp = larray; 
   while(tmp) 
@@ -58,7 +58,7 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
   //unsigned float W_less = 0; 
 
   struct stump *s = malloc(sizeof(struct stump)); 
-  unsigned long j = 0;
+  unsigned long j = 1;
   s->t = t1;
   float e1 = 2;
   s->E = e1;
@@ -73,7 +73,7 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
 
   while (1)
   {
-    printf("dans le while 1\n"); 
+    //printf("dans le while 1\n"); 
     float erreur_p = Wm_1 + Wp_m1;
     float erreur_m = Wm_m1 + Wp_1;
 
@@ -101,7 +101,7 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
 
     while (1)
     {
-      printf("dans le deuxieme while\n"); 
+      //printf("dans le deuxieme while\n"); 
       if (tmp->face == -1)
       {
         Wm_m1 += w[n];
@@ -112,20 +112,23 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
         Wm_1 += w[n];
         Wp_1 += w[n];
       }
-//      printf("juste avant le break\n"); 
-      if (j == nbex || larray->array != larray->next->array)
+      //printf("juste avant le break\n"); 
+      if (j == nbex || larray->array[j] != larray->next->array[j])
         break;
       else
       {
         j++;
+        //printf("%lu\n", j); 
         tmp = tmp->next;
+        //printf("%d\n", tmp->ieme); 
       }
     }
 
     if (j == nbex)
     {
       struct list_haar *TMP = larray; 
-//      printf("juste avant le trosieme while  \n"); 
+      //fflush(stdout); 
+      //printf("juste avant le trosieme while  \n"); 
       while (TMP != NULL)
       {
         if (t1 < TMP->array[n])
@@ -147,7 +150,7 @@ struct stump *decision_stump(struct list_haar *larray, float *w, unsigned long n
 
 struct stump *best_stump(struct list_haar  *larray, float *w, int nbex, int d) // d nombre de features initialisés à 5 dans la fonction adaboost
 {
- printf(" **** lancement de best stump **** \n\n"); 
+ //printf(" **** lancement de best stump **** \n\n"); 
   //int n = larray->nb_haar; //numero du tableau d'image  
   struct stump *best = malloc(sizeof(struct stump));
   best->E = 2;
@@ -176,7 +179,7 @@ struct stump *best_stump(struct list_haar  *larray, float *w, int nbex, int d) /
 
 void adaboost(struct list_haar *larray, int nbex, int T)
 {
-  printf("******lancement d'adaboost****\n\n");  
+  //printf("******lancement d'adaboost****\n\n");  
   float alpha = 1;    
   long Et = 0;
   float *w = malloc(nbex * sizeof(float)); 
