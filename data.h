@@ -3,6 +3,6 @@
 
 #include"rect.h"
 
-int write_data(struct stump *h, float alpha); 
+void write_data(struct stump *h, float alpha); 
 
 #endif

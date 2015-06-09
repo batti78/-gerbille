@@ -3,14 +3,14 @@
 #include"rect.h"
 #include"data.h"
 
-int write_data(struct stump *h, float alpha)
+void write_data(struct stump *h, float alpha)
 {
   FILE *file = fopen("./strong_classifier","a");
   if(file)
   {
-    fprintf("%d %d %d %f %f\n",h->t, h->T, h->M, h->E, alpha); 
+    fprintf(file,"%ld %d %ld %f %ld %f\n",h->t, h->T, h->M, h->E, h->coord, alpha); 
     fclose(file); 
   }
   else
-    fprint("File doesn't exist");
+    printf("File doesn't exist");
 }
