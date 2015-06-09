@@ -8,7 +8,8 @@
 #include<sys/types.h>
 #include<string.h>
 #include"dir_functions.c"
-#include"haar.c"
+#include"adaboost.c"
+#include"haar.c" 
 
 int main(int argc, char *argv[])
 {
@@ -81,9 +82,11 @@ int main(int argc, char *argv[])
         count++;
 
       }
-
       i++;
     }
+
+    adaboost(list->next, 303, 1);
+
     /*
        tmp = list;
        while (tmp->next)
