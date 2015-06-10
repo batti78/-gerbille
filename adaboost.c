@@ -206,6 +206,6 @@ void adaboost(struct list_haar *larray, int nbex, int T)
         for(j = 0; j < nbex; j++ )
           w[j] = (w[j] / 2) * ((1 / Et) + (1 / (1 - Et)));
       }
+      write_data(h, alpha); 
   }
-  write_data(h, alpha); 
 }
